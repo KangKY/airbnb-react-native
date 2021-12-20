@@ -2,24 +2,23 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { logIn, logOut } from '../redux/usersSlice';
+import Auth from "../navigation/Auth";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default () => {
   const { isLoggedIn, token } = useSelector((state)=>state.usersReducer)
-  console.log(isLoggedIn, token);
   const dispatch = useDispatch()
 
   return (
-    <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+    <NavigationContainer>
       {isLoggedIn ? (
         <TouchableOpacity onPress={() => dispatch(logOut())}>
           <Text>Log Out</Text>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={() => dispatch(logIn({token:"tz"}))}>
-          <Text>Log In</Text>
-        </TouchableOpacity>
+        <Auth />
       )}
-    </View>
+    </NavigationContainer>
   );
 }
 

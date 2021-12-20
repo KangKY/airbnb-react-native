@@ -37,7 +37,6 @@ export default function App() {
     return Promise.all([...promiseImages, ...promiseFonts]);
   }
 
-
   return isReady ? (
     <Provider store={store}>
        <PersistGate persistor={persistor}>
@@ -51,14 +50,5 @@ export default function App() {
         onError={console.error}
       />
   )
-
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
