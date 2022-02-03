@@ -21,8 +21,8 @@ const InputContainer = styled.View`
 
 export default ({ route: { params } }) => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState(params?.email);
-  const [password, setPassword] = useState(params?.password);
+  const [email, setEmail] = useState(params?params.email:"ruddlf4933@naver.com");
+  const [password, setPassword] = useState(params?params.password:"1234");
   const isFormValid = () => {
     if (email === "" || password === "") {
       alert("모든 필드를 입력해주세요.");

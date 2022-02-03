@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../api";
+import { setFav, setFavs } from "./roomSlice";
 
 const userSlice = createSlice({
-  name:"users",
+  name: "users",
   initialState: {
     isLoggedIn: false,
     token: null
@@ -11,6 +12,7 @@ const userSlice = createSlice({
     logIn(state, action) {
       state.isLoggedIn = true;
       state.token = action.payload.token;
+      state.id = action.payload.id;
     },
     logOut(state, action) {
       state.isLoggedIn = false;
@@ -23,13 +25,34 @@ export const { logIn, logOut } = userSlice.actions;
 
 export const userLogin = form => async dispatch => {
   try {
-    const { data : { id, token} } = await api.login(form);
-    if(id && token) {
-      dispatch(logIn({ token }))
+    const { data: { id, token } } = await api.login(form);
+    if (id && token) {
+      dispatch(logIn({ token, id }))
     }
   } catch (e) {
     console.log(e);
     alert("잘못된 정보입니다.")
+  }
+}
+
+export const getFavs = () => async (dispatch, getState) => {
+  const {
+    usersReducer: { id, token }
+  } = getState();
+  try {
+    const { data } = await api.favs(id, token);
+    dispatch(setFavs(data));
+  } catch (e) {
+    console.warn(e);
+  }
+};
+export const toggleFav = roomId => async (dispatch, getState) => {
+  const { usersReducer: { id, token } } = getState();
+  dispatch(setFav({roomId}));
+  try {
+    await api.toggleFavs(id, roomId, token);
+  } catch (e) {
+    console.warn(e)
   }
 }
 export default userSlice.reducer;
